@@ -16,12 +16,12 @@ export default function RootLayout({ children }) {
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             {/* Header with high z-index */}
-            <div className="relative z-50">
+            <div className="fixed top-0 left-0 right-0 z-50">
               <Header />
             </div>
             
             {/* Main content with lower z-index */}
-            <main className="relative ">
+            <main className="relative pt-18 ">
               {children}
             </main>
           </AuthProvider>
