@@ -278,13 +278,13 @@ export default function CartPage() {
               {/* Coupon Section */}
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <h4 className="font-medium text-xl text-gray-600 mb-10">Have a coupon?</h4>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-col md:flex-row">
                   <input
                     type="text"
                     placeholder="Enter code"
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E8B57]/30 focus:border-[#2E8B57]"
                   />
-                  <button className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-700 px-4 rounded-lg font-medium transition-colors whitespace-nowrap">
+                  <button className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
                     Apply
                   </button>
                 </div>
