@@ -3,10 +3,53 @@
 import { useProduct } from "@/hooks/useProduct";
 import { useState } from "react";
 import EditProductModal from "../../components/modal/editProductModal/modal";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { formatCurrency } from "@/utils/formatcurrrency";
 
 export default function MyProducts() {
   const { userProducts, userLoading, deleteProduct } = useProduct();
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // Enhanced delete function with SweetAlert2
+const handleDeleteProduct = (productId, productName) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      html: `
+        <div class="text-center">
+          <p class="text-gray-600 text-lg font-medium">You are about to delete  
+          <span class="text-xl font-semibold text-red-500 ">"${productName}"</span></p>
+        </div>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#2E8B57',
+      cancelButtonColor: '#6B7280',
+      background: '#ffffff',
+      customClass: {
+        popup: 'rounded-3xl shadow-2xl border border-gray-100 ',
+        confirmButton: 'px-6 py-3 rounded-xl font-semibold text-base bg-red-500 hover:bg-red-600 text-white border-0 mx-2',
+        cancelButton: 'px-6 py-3 rounded-xl font-semibold text-base bg-gray-500 hover:bg-gray-600 text-white border-0 mx-2',
+        actions: 'gap-4',
+        title: 'text-2xl font-bold text-gray-800'
+      },
+      buttonsStyling: false,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteProduct.mutate(productId, {
+          onSuccess: () => {
+           toast.success("Product Deleted Successfully!");
+          },
+          onError: (err) => {
+            toast.error("Failed to Delete Product.");
+          }
+        });
+      }
+    });
+  };
 
   if (userLoading) return (
     <div className="min-h-screen bg-gradient-to-br from-[#2E8B57]/10 via-white to-[#F5F5F5]/20 p-6 flex items-center justify-center">
@@ -45,12 +88,12 @@ export default function MyProducts() {
                       <img
                         src={product.imageUrl}
                         alt={product.name}
-                        className="w-16 h-16 object-cover"
+                        className="w-16 h-16 object-cover rounded-lg"
                       />
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-800">{product.name}</td>
                     <td className="px-6 py-4">
-                      <span className="font-bold text-[#2E8B57] text-lg">${product.price}</span>
+                      <span className="font-bold text-[#2E8B57] text-lg">{formatCurrency(product.price)}</span>
                     </td>
                     <td className="px-6 py-4">
                       <span className="bg-gray-100/80 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
@@ -60,13 +103,13 @@ export default function MyProducts() {
                     <td className="px-6 py-4 space-x-3">
                       <button
                          onClick={() => setSelectedProduct(product)}
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg cursor-pointer"
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg cursor-pointer transition-all duration-200 hover:scale-105"
                       >
                         Edit
                       </button>
                       <button
-                         onClick={() => deleteProduct.mutate(product._id)}
-                        className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg cursor-pointer"
+                         onClick={() => handleDeleteProduct(product._id, product.name)}
+                        className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg cursor-pointer transition-all duration-200 hover:scale-105"
                       >
                         Delete
                       </button>
@@ -88,7 +131,7 @@ export default function MyProducts() {
                     />
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800 text-lg">{product.name}</h3>
-                      <p className="font-bold text-[#2E8B57] text-lg">${product.price}</p>
+                      <p className="font-semibold text-[#2E8B57] text-lg">{formatCurrency(product.price)}</p>
                     </div>
                   </div>
                   <div className="flex justify-between items-center mb-3">
@@ -99,13 +142,13 @@ export default function MyProducts() {
                   <div className="flex space-x-2">
                     <button
                       onClick={() => setSelectedProduct(product)}
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-lg font-medium hover:shadow-lg cursor-pointer text-sm"
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-lg font-medium hover:shadow-lg cursor-pointer text-sm transition-all duration-200 hover:scale-105"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => deleteProduct.mutate(product._id)}
-                      className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-lg font-medium hover:shadow-lg cursor-pointer text-sm"
+                      onClick={() => handleDeleteProduct(product._id, product.name)}
+                      className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-lg font-medium hover:shadow-lg cursor-pointer text-sm transition-all duration-200 hover:scale-105"
                     >
                       Delete
                     </button>

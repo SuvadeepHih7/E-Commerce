@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
             </div>
             
             {/* Main content with lower z-index */}
-            <main className="relative z-10">
+            <main className="relative ">
               {children}
             </main>
           </AuthProvider>

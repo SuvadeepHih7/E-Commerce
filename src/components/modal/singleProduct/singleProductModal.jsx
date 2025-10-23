@@ -2,6 +2,7 @@
 
 import { useCart } from "@/hooks/useCart";
 import { useProduct } from "@/hooks/useProduct";
+import { formatCurrency } from "@/utils/formatcurrrency";
 import { useQuery } from "@tanstack/react-query";
 
 export default function ProductDetailsModal({ productId, onClose }) {
@@ -62,8 +63,8 @@ export default function ProductDetailsModal({ productId, onClose }) {
 
                 {/* Price */}
                 <div className="flex flex-col md:flex-row md:items-baseline space-x-3 space-y-2 items-center">
-                  <span className="text-2xl md:text-3xl font-bold text-[#2E8B57]">${product?.price}</span>
-                  <span className="text-sm md:text-md text-gray-400 line-through">${(product?.price * 1.15).toFixed(2)}</span>
+                  <span className="text-2xl md:text-3xl font-semibold text-[#2E8B57]">{formatCurrency(product?.price)}</span>
+                  <span className="text-sm md:text-md text-gray-400 line-through">  {formatCurrency((product?.price * 1.15).toFixed(2))}</span>
                   <span className="bg-red-100 text-red-600 px-2 sm:px-3 py-1 rounded-full text-sm font-semibold">
                     15% OFF
                   </span>

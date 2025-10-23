@@ -3,9 +3,10 @@
 import { useForm } from "react-hook-form";
 import { useProduct } from "@/hooks/useProduct";
 import toast from "react-hot-toast";
+import { useState } from "react"; // Import useState
 
 export default function EditProductModal({ product, onClose }) {
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       name: product.name,
       price: product.price,
@@ -14,6 +15,26 @@ export default function EditProductModal({ product, onClose }) {
   });
 
   const { updateProduct } = useProduct();
+  
+  // State to track the new image preview
+  const [newImagePreview, setNewImagePreview] = useState(null);
+  
+  // Watch the image input for changes
+  const imageFile = watch("image");
+
+  // Handle image change and create preview
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setNewImagePreview(null);
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -52,13 +73,17 @@ export default function EditProductModal({ product, onClose }) {
         <div className="p-2 flex justify-center items-center">
           <div className="flex items-center space-x-4">
             <img
-              src={product.imageUrl}
+              src={newImagePreview || product.imageUrl}
               alt={product.name}
-              className="w-16 h-16 object-cover "
+              className="w-16 h-16 object-cover rounded-lg"
             />
             <div>
-              <p className="text-sm text-gray-600">Current Image</p>
-              <p className="text-xs text-gray-500">Upload new image below</p>
+              <p className="text-sm text-gray-600">
+                {newImagePreview ? "New Image Preview" : "Current Image"}
+              </p>
+              <p className="text-xs text-gray-500">
+                {newImagePreview ? "This will replace the current image" : "Upload new image below"}
+              </p>
             </div>
           </div>
         </div>
@@ -73,16 +98,16 @@ export default function EditProductModal({ product, onClose }) {
               {...register("image")}
               type="file"
               accept="image/*"
+              onChange={handleImageChange}
               className="w-full border border-gray-300 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2E8B57]/50 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#2E8B57]/10 file:text-[#2E8B57] hover:file:bg-[#2E8B57]/20"
             />
           </div>
-
 
           {/* Product Name */}
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-700">Name</label>
             <input
-              {...register("name")}
+              {...register("name", { required: "Product name is required" })}
               type="text"
               className="w-full border border-gray-300 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2E8B57]/50 focus:border-transparent transition-all duration-200"
             />
@@ -92,7 +117,7 @@ export default function EditProductModal({ product, onClose }) {
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-700">Price</label>
             <input
-              {...register("price")}
+              {...register("price", { required: "Price is required" })}
               type="number"
               step="0.01"
               className="w-full border border-gray-300 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2E8B57]/50 focus:border-transparent transition-all duration-200"
@@ -103,7 +128,7 @@ export default function EditProductModal({ product, onClose }) {
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-700">Quantity</label>
             <input
-              {...register("quentity")}
+              {...register("quentity", { required: "Quantity is required" })}
               type="number"
               className="w-full border border-gray-300 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2E8B57]/50 focus:border-transparent transition-all duration-200"
             />

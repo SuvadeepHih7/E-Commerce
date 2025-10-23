@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useProduct } from "@/hooks/useProduct";
 import InputField from "@/components/InputField";
 import toast from "react-hot-toast";
+import { useState } from "react"; // Import useState
 
 export default function ProductForm() {
   const {
@@ -11,9 +12,30 @@ export default function ProductForm() {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm();
 
   const { addProduct } = useProduct();
+  
+  // State for image preview
+  const [imagePreview, setImagePreview] = useState(null);
+
+  // Watch the image input for changes
+  const imageFile = watch("image");
+
+  // Handle image change and create preview
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -29,6 +51,7 @@ export default function ProductForm() {
       await addProduct.mutateAsync(formData);
       toast.success("Product Added Successfully!");
       reset();
+      setImagePreview(null); // Reset image preview after successful submission
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || "Failed to add product");
@@ -94,6 +117,7 @@ export default function ProductForm() {
                   register={register}
                   errors={errors}
                   type="text"
+                  validation={{ required: "Product name is required" }}
                 />
 
                 {/* Price */}
@@ -103,6 +127,7 @@ export default function ProductForm() {
                   type="number"
                   register={register}
                   errors={errors}
+                  validation={{ required: "Price is required" }}
                 />
 
                 {/* Quantity */}
@@ -112,6 +137,7 @@ export default function ProductForm() {
                   type="number"
                   register={register}
                   errors={errors}
+                  validation={{ required: "Quantity is required" }}
                 />
 
                 {/* Product Image */}
@@ -123,10 +149,31 @@ export default function ProductForm() {
                     {...register("image", { required: "Image is required" })}
                     type="file"
                     accept="image/*"
+                    onChange={handleImageChange}
                     className="w-full border border-gray-300 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2E8B57]/50 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#2E8B57]/10 file:text-[#2E8B57] hover:file:bg-[#2E8B57]/20"
                   />
                   {errors.image && (
                     <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
+                  )}
+                  
+                  {/* Image Preview Section */}
+                  {imagePreview && (
+                    <div className="mt-4 p-4 border border-gray-200 rounded-xl bg-white/50 backdrop-blur-sm">
+                      {/* <p className="text-sm font-medium text-gray-700 mb-2">Image Preview:</p> */}
+                      <div className="flex items-center space-x-4">
+                        <img
+                          src={imagePreview}
+                          alt="Product preview"
+                          className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                        />
+                        <div>
+                          <p className="text-sm text-gray-600">Selected image preview</p>
+                          <p className="text-xs text-gray-500">
+                            This image will be uploaded with your product
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
 
@@ -134,7 +181,7 @@ export default function ProductForm() {
                 <button
                   type="submit"
                   disabled={addProduct.isPending}
-                  className=" mt-8 w-full bg-gradient-to-r from-[#2E8B57] to-[#3CB371] text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed hover:scale-105 transform"
+                  className="mt-8 w-full bg-gradient-to-r from-[#2E8B57] to-[#3CB371] text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed hover:scale-105 transform"
                 >
                   {addProduct.isPending ? "Adding Product..." : "Add Product"}
                 </button>

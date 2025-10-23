@@ -4,6 +4,7 @@ import { useCart } from "@/hooks/useCart";
 import React from "react";
 import { Loader2, Plus, Minus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { formatCurrency } from "@/utils/formatcurrrency";
 
 export default function CartPage() {
   const { cart, isLoading, isError, updateCart, clearCart, isClearing, createOrder, isOrdering } = useCart();
@@ -185,7 +186,7 @@ export default function CartPage() {
 
                   {/* Price Column */}
                   <div className="col-span-2 text-center">
-                    <span className="text-lg font-bold text-[#2E8B57]">${item.product.price}</span>
+                    <span className="text-lg font-bold text-[#2E8B57]">{formatCurrency(item.product.price)}</span>
                   </div>
 
                   {/* Quantity Column */}
@@ -209,7 +210,7 @@ export default function CartPage() {
                   {/* Total Column */}
                   <div className="col-span-2 flex items-center justify-center space-x-3">
                     <span className="text-lg font-bold text-gray-800">
-                      ${(item.product.price * item.quentity).toFixed(2)}
+                      {formatCurrency(item.product.price * item.quentity)}
                     </span>
                     <button
                       onClick={() => handleRemoveItem(item.productId)}
@@ -315,7 +316,7 @@ export default function CartPage() {
               <div className="border-t border-gray-200 pt-5">
                 <div className="flex justify-between text-xl font-semibold">
                   <span className="text-gray-600">Grand Total:</span>
-                  <span>${finalTotal.toFixed(2)}</span>
+                  <span>{formatCurrency(total + shipping + deliveryCharge)}</span>
                 </div>
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 w-full">
@@ -323,7 +324,7 @@ export default function CartPage() {
                   <button
                     onClick={handleCheckout}
                     disabled={isOrdering}
-                    className="w-full bg-gradient-to-r from-[#2E8B57] to-[#3CB371] text-white py-3 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity disabled:opacity-70"
+                    className="cursor-pointer w-full bg-gradient-to-r from-[#2E8B57] to-[#3CB371] text-white py-3 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity disabled:opacity-70"
                   >
                     {isOrdering ? "Placing Order..." : "Check Out"}
                   </button>

@@ -15,7 +15,8 @@ import {
   ChevronDown,
   Menu,
   X,
-  PackageCheck
+  PackageCheck,
+  Boxes
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -128,6 +129,15 @@ export default function Header() {
                         <span>Add Product</span>
                       </Link>
 
+                       <Link
+                        href="/orderDetails"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="text-lg flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-[#2E8B57]/10 hover:text-[#2E8B57] transition-colors duration-200"
+                      >
+                        <Boxes className="w-6 h-6" />
+                        <span>My Orders</span>
+                      </Link>
+
                       <div className="border-t border-gray-200 mt-2 "></div>
 
                       <button
@@ -235,6 +245,15 @@ export default function Header() {
                 >
                   <Plus className="w-5 h-5" />
                   Add Product
+                </Link>
+
+                 <Link
+                  href="/orderDetails"
+                  className="flex items-center gap-3 text-gray-800 hover:bg-[#2E8B57]/10 hover:text-[#2E8B57] text-lg font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  <Boxes className="w-5 h-5" />
+                  My Orders
                 </Link>
 
                 <div className="border-t border-gray-200 my-2"></div>

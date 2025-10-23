@@ -4,16 +4,18 @@ import { useForm } from "react-hook-form";
 import InputField from "./InputField";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function AuthForm({ mode = "login" }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { registerUser, loginUser } = useAuth();
     const { login, token } = useContext(AuthContext);
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
 
     // Instructions data
     const loginInstructions = [
@@ -37,6 +39,10 @@ export default function AuthForm({ mode = "login" }) {
             router.replace("/product");
         }
     }, [token, router]);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const onSubmit = async (data) => {
         try {
@@ -93,17 +99,33 @@ export default function AuthForm({ mode = "login" }) {
                                             type="email"
                                             register={register}
                                             errors={errors}
-                                            required
+                                            validation={{ required: "Email is required" }}
                                         />
 
-                                        <InputField
-                                            label="Password"
-                                            name="password"
-                                            type="password"
-                                            register={register}
-                                            errors={errors}
-                                            required
-                                        />
+                                          <div className="relative">
+                                            <InputField
+                                                label="Password"
+                                                name="password"
+                                                type={showPassword ? "text" : "password"}
+                                                register={register}
+                                                errors={errors}
+                                                validation={{ required: "Password is required" }}
+                                                className="pr-10"
+                                            />
+                                            <div className="absolute right-3 top-12 transform -translate-y-1/2">
+                                                <button
+                                                    type="button"
+                                                    onClick={togglePasswordVisibility}
+                                                    className="text-gray-500 hover:text-[#2E8B57] transition-colors duration-200 focus:outline-none"
+                                                >
+                                                    {showPassword ? (
+                                                        <EyeOff size={20} />
+                                                    ) : (
+                                                        <Eye size={20} />
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
 
                                         <button
                                             type="submit"
@@ -133,7 +155,7 @@ export default function AuthForm({ mode = "login" }) {
                                         <h2 className="text-4xl font-bold text-[#228B22]">Getting Started</h2>
                                         <p className="text-gray-600 text-lg">Follow these steps to create your account</p>
                                     </div>
-                                    
+
                                     <div className="space-y-4">
                                         {instructions.map((instruction, index) => (
                                             <div key={index} className="flex items-start space-x-3">
@@ -151,7 +173,7 @@ export default function AuthForm({ mode = "login" }) {
                             <div className="w-0.5 h-4/5 bg-gradient-to-b from-transparent via-[#2E8B57]/30 to-transparent"></div>
                         </div>
                         <div className="lg:hidden w-full h-0.5 bg-gradient-to-r from-transparent via-[#2E8B57]/30 to-transparent my-4"></div>
-                        
+
                         <div className="flex-1 p-8 lg:p-12">
                             {isLogin ? (
                                 // Login: Right side is Instructions
@@ -160,7 +182,7 @@ export default function AuthForm({ mode = "login" }) {
                                         <h2 className="text-4xl font-bold text-[#228B22]">Login Guide</h2>
                                         <p className="text-gray-600 text-lg">Important information for signing in</p>
                                     </div>
-                                    
+
                                     <div className="space-y-4">
                                         {instructions.map((instruction, index) => (
                                             <div key={index} className="flex items-start space-x-3">
@@ -184,7 +206,7 @@ export default function AuthForm({ mode = "login" }) {
                                             name="name"
                                             register={register}
                                             errors={errors}
-                                            required
+                                            validation={{ required: "Name is required" }}
                                         />
 
                                         <InputField
@@ -193,17 +215,33 @@ export default function AuthForm({ mode = "login" }) {
                                             type="email"
                                             register={register}
                                             errors={errors}
-                                            required
+                                            validation={{ required: "Email is required" }}
                                         />
 
-                                        <InputField
-                                            label="Password"
-                                            name="password"
-                                            type="password"
-                                            register={register}
-                                            errors={errors}
-                                            required
-                                        />
+                                        <div className="relative">
+                                            <InputField
+                                                label="Password"
+                                                name="password"
+                                                type={showPassword ? "text" : "password"}
+                                                register={register}
+                                                errors={errors}
+                                                validation={{ required: "Password is required" }}
+                                                className="pr-10"
+                                            />
+                                            <div className="absolute right-3 top-12 transform -translate-y-1/2">
+                                                <button
+                                                    type="button"
+                                                    onClick={togglePasswordVisibility}
+                                                    className="text-gray-500 hover:text-[#2E8B57] transition-colors duration-200 focus:outline-none"
+                                                >
+                                                    {showPassword ? (
+                                                        <EyeOff size={20} />
+                                                    ) : (
+                                                        <Eye size={20} />
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
 
                                         <button
                                             type="submit"

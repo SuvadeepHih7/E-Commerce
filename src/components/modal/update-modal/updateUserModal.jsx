@@ -61,11 +61,7 @@ export default function UpdateUserModal({ user, onClose }) {
                         <label className="block text-sm font-medium mb-2 text-gray-700">Email</label>
                         <input
                             {...register("email", {
-                                required: "Email is required",
-                                pattern: {
-                                    value: /^\S+@\S+$/i,
-                                    message: "Invalid email format",
-                                },
+                                required: "Email is required"
                             })}
                             type="email"
                             className="w-full border border-gray-300 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2E8B57]/50 focus:border-transparent transition-all duration-200"
