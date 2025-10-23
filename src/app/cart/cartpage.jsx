@@ -4,7 +4,8 @@ import { useCart } from "@/hooks/useCart";
 import React from "react";
 import { Loader2, Plus, Minus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { formatCurrency } from "@/utils/formatcurrrency";
+import { formatCurrency } from "@/utils/currencyFormat";
+
 
 export default function CartPage() {
   const { cart, isLoading, isError, updateCart, clearCart, isClearing, createOrder, isOrdering } = useCart();

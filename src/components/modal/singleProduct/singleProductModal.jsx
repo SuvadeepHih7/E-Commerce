@@ -2,7 +2,8 @@
 
 import { useCart } from "@/hooks/useCart";
 import { useProduct } from "@/hooks/useProduct";
-import { formatCurrency } from "@/utils/formatcurrrency";
+import { formatCurrency } from "@/utils/currencyFormat";
+
 import { useQuery } from "@tanstack/react-query";
 
 export default function ProductDetailsModal({ productId, onClose }) {

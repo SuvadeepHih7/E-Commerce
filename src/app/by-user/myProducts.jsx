@@ -5,7 +5,8 @@ import { useState } from "react";
 import EditProductModal from "../../components/modal/editProductModal/modal";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import { formatCurrency } from "@/utils/formatcurrrency";
+import { formatCurrency } from "@/utils/currencyFormat";
+
 
 export default function MyProducts() {
   const { userProducts, userLoading, deleteProduct } = useProduct();

@@ -1,6 +1,7 @@
 import ProductDetailsModal from "@/components/modal/singleProduct/singleProductModal";
 import { useCart } from "@/hooks/useCart";
-import { formatCurrency } from "@/utils/formatcurrrency";
+import { formatCurrency } from "@/utils/currencyFormat";
+
 import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 

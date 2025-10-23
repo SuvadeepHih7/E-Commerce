@@ -3,7 +3,8 @@ import React from "react";
 import { useState } from "react";
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { useUserOrder } from "@/hooks/useOrder";
-import { formatCurrency } from "@/utils/formatcurrrency";
+import { formatCurrency } from "@/utils/currencyFormat";
+
 
 export default function OrderPage() {
     const [page, setPage] = useState(1);
